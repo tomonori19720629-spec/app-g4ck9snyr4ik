@@ -2,7 +2,7 @@
 <html lang="ja">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>適性検査センター</title>
 <meta name="robots" content="noindex,nofollow">
 <meta name="theme-color" content="#2563eb">
@@ -15,7 +15,7 @@
 :root{--bg:#f4f6fa;--card:#fff;--text:#1f2937;--sub:#6b7280;--main:#2563eb;--main2:#dbeafe;--line:#e5e7eb;--teal:#14b8a6;--ok:#16a34a;--warn:#ca8a04;--ng:#dc2626}
 @media (prefers-color-scheme:dark){:root{--bg:#0f172a;--card:#1e293b;--text:#f1f5f9;--sub:#94a3b8;--main:#60a5fa;--main2:#1e3a5f;--line:#334155}}
 *{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,"Hiragino Sans","Yu Gothic",sans-serif;line-height:1.7}
+html{-webkit-text-size-adjust:100%}body{-webkit-tap-highlight-color:transparent;padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,"Hiragino Sans","Yu Gothic",sans-serif;line-height:1.7}
 .wrap{max-width:760px;margin:0 auto;padding:16px 16px 60px}
 .wrap.wide{max-width:1040px}
 .card{background:var(--card);border-radius:16px;padding:22px 20px;box-shadow:0 2px 12px rgba(0,0,0,.06);margin-bottom:16px}
@@ -67,7 +67,9 @@ tr.click:hover{background:var(--main2);cursor:pointer}
 .timer{font-variant-numeric:tabular-nums;font-weight:700}
 code.k{display:block;word-break:break-all;font-size:11px;background:var(--bg);padding:8px;border-radius:8px;max-height:90px;overflow:auto}
 svg text{fill:var(--text);font-size:12px}
-@media (max-width:560px){.row{grid-template-columns:90px 1fr;}.row .v{grid-column:1/-1;text-align:left}}
+.rsub{margin:-6px 0 4px 120px}
+table.wt{min-width:620px}table.wt td,table.wt th{white-space:nowrap}
+@media (max-width:560px){.wrap{padding:12px 12px 50px}.card{padding:18px 14px}h1{font-size:21px}.row{grid-template-columns:1fr auto;gap:4px 10px}.row .bar{grid-column:1/-1;grid-row:2}.row .v{grid-column:2;grid-row:1;text-align:right}.rsub{margin-left:0}.opt{padding:15px 14px}.hero>div{flex-basis:100%;max-width:none}}
 @media print{.noprint{display:none!important}body{background:#fff}.card{box-shadow:none;border:1px solid #ccc;break-inside:avoid}}
 </style>
 </head>
@@ -240,7 +242,7 @@ function resultView(r,adm){
   let right=`${v}点 ${r.t==="basic"?"":"("+level(v)+")"}`;
   if(r.t==="basic"&&r.x&&r.x.raw&&r.x.raw[k])right=`${r.x.raw[k][0]}/${r.x.raw[k][1]}問 (${v}%)`;
   const extra=(prev&&prev.s[k]!=null?` 前回比${diff(v,prev.s[k])}`:"")+(avg&&avg[k]!=null?` 平均比${diff(v,avg[k])}`:"");
-  h+=`<div class="row"><div><b>${D[k].n}</b></div><div class="bar"><i style="width:${v}%"></i></div><div class="v">${right}</div></div><div class="sub" style="margin:-6px 0 4px 120px">${esc(D[k].d)}${extra}</div>`});
+  h+=`<div class="row"><div><b>${D[k].n}</b></div><div class="bar"><i style="width:${v}%"></i></div><div class="v">${right}</div></div><div class="sub rsub">${esc(D[k].d)}${extra}</div>`});
  h+=`</div>`;
  if(r.t==="basic"&&r.x&&r.x.secs!=null)h+=`<div class="card"><p>所要時間:${Math.floor(r.x.secs/60)}分${r.x.secs%60}秒 / 受検科目数:${mk.length}</p><p class="sub">${r.x.timeout?"時間切れで自動提出された科目があります。":""}正答率の目安: 80%以上=高い、50〜79%=標準、49%以下=基礎の復習が必要。</p></div>`;
  const motiv=Object.keys(D).filter(k=>D[k].kind==="motiv");
@@ -339,7 +341,7 @@ function filterBar(){const depts=[...new Set(getDB().map(r=>r.d).filter(Boolean)
  <div><label>所属</label><select onchange="AF.d=this.value;render()"><option value="">すべて</option>${depts.map(d=>`<option ${AF.d===d?"selected":""}>${esc(d)}</option>`).join("")}</select></div>
  <div><label>氏名検索</label><input type="text" value="${esc(AF.q)}" onchange="AF.q=this.value;render()"></div></div></div>`}
 function tList(){const rows=filtered();
- $("tab").innerHTML=filterBar()+`<div class="card"><p class="sub">${rows.length}件</p><div style="overflow-x:auto"><table><tr><th>日時</th><th>検査</th><th>氏名</th><th>所属</th><th>総合</th><th>判定</th><th>注意</th></tr>${rows.map(r=>`<tr class="click" onclick="openR('${r.id}')"><td>${fdate(r.ts)}</td><td>${TESTS[r.t].name}</td><td>${esc(r.n)}</td><td>${esc(r.d)}</td><td>${r.o}</td><td>${rkBadge(r.t,r.o)}</td><td>${(r.x&&r.x.v>=85)||(r.x&&r.x.sl)?"⚠":""}${r.x&&r.x.risk>=60?"離職高":""}</td></tr>`).join("")||`<tr><td colspan="7" class="sub">データがありません。「データ管理」からデモデータを作成できます。</td></tr>`}</table></div></div>`}
+ $("tab").innerHTML=filterBar()+`<div class="card"><p class="sub">${rows.length}件</p><div style="overflow-x:auto"><table class="wt"><tr><th>日時</th><th>検査</th><th>氏名</th><th>所属</th><th>総合</th><th>判定</th><th>注意</th></tr>${rows.map(r=>`<tr class="click" onclick="openR('${r.id}')"><td>${fdate(r.ts)}</td><td>${TESTS[r.t].name}</td><td>${esc(r.n)}</td><td>${esc(r.d)}</td><td>${r.o}</td><td>${rkBadge(r.t,r.o)}</td><td>${(r.x&&r.x.v>=85)||(r.x&&r.x.sl)?"⚠":""}${r.x&&r.x.risk>=60?"離職高":""}</td></tr>`).join("")||`<tr><td colspan="7" class="sub">データがありません。「データ管理」からデモデータを作成できます。</td></tr>`}</table></div></div>`}
 function openR(id){const r=getDB().find(x=>x.id===id);if(r)go("view",{r,adm:true,back:"admin",tab:"list"})}
 function tStats(){
  const t=AF.t||"hire";AF.t=t;let rows=filtered();const T=TESTS[t],mk=mainKeys(t),bm=bench(t);

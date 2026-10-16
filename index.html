@@ -1,0 +1,402 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>適性検査センター</title>
+<meta name="robots" content="noindex,nofollow">
+<meta name="theme-color" content="#2563eb">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="適性検査">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<style>
+:root{--bg:#f4f6fa;--card:#fff;--text:#1f2937;--sub:#6b7280;--main:#2563eb;--main2:#dbeafe;--line:#e5e7eb;--teal:#14b8a6;--ok:#16a34a;--warn:#ca8a04;--ng:#dc2626}
+@media (prefers-color-scheme:dark){:root{--bg:#0f172a;--card:#1e293b;--text:#f1f5f9;--sub:#94a3b8;--main:#60a5fa;--main2:#1e3a5f;--line:#334155}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,"Hiragino Sans","Yu Gothic",sans-serif;line-height:1.7}
+.wrap{max-width:760px;margin:0 auto;padding:16px 16px 60px}
+.wrap.wide{max-width:1040px}
+.card{background:var(--card);border-radius:16px;padding:22px 20px;box-shadow:0 2px 12px rgba(0,0,0,.06);margin-bottom:16px}
+h1{font-size:24px;margin:0 0 8px}h2{font-size:17px;margin:0 0 10px}h3{font-size:15px;margin:14px 0 6px}
+p{margin:8px 0}.sub{color:var(--sub);font-size:13px}
+input[type=text],input[type=password],input[type=number],select,textarea{width:100%;padding:11px;font-size:16px;border:1px solid var(--line);border-radius:10px;background:var(--bg);color:var(--text);font-family:inherit}
+textarea{min-height:90px}
+label{display:block;font-size:14px;font-weight:600;margin:12px 0 4px}
+button{font:inherit;cursor:pointer}
+.btn{display:block;width:100%;padding:13px;border:0;border-radius:12px;background:var(--main);color:#fff;font-size:16px;font-weight:700;margin-top:14px}
+.btn.ghost{background:transparent;color:var(--main);border:1px solid var(--main)}
+.btn.danger{background:var(--ng)}
+.btn.sm{display:inline-block;width:auto;padding:8px 14px;font-size:14px;margin:4px 6px 0 0}
+.btn:disabled{opacity:.4;cursor:not-allowed}
+.grid{display:grid;gap:12px}.g2{grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
+.tcard{border:1px solid var(--line);border-radius:14px;padding:16px;background:var(--card)}
+.tcard h2{margin:0 0 4px}
+.ico{font-size:28px}
+.bar{height:8px;background:var(--line);border-radius:99px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--main);transition:width .25s}
+.q{font-size:18px;font-weight:600;margin:18px 0;white-space:pre-wrap}
+.opts{display:grid;gap:8px}
+.opt{padding:13px 14px;border:1px solid var(--line);border-radius:12px;background:var(--card);color:var(--text);text-align:left;font-size:15px}
+.opt:hover,.opt.sel{border-color:var(--main);background:var(--main2)}
+.nav{display:flex;gap:8px}
+.tag{display:inline-block;background:var(--main2);color:var(--main);border-radius:99px;padding:2px 12px;font-size:13px;font-weight:700;margin:2px 4px 2px 0}
+.hidden{display:none}
+.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;gap:8px;flex-wrap:wrap}
+.link{background:none;border:0;color:var(--main);text-decoration:underline;font-size:14px;padding:4px}
+.hero{display:flex;gap:16px;flex-wrap:wrap;align-items:center;justify-content:center}
+.hero>div{flex:1 1 220px;max-width:340px}
+.rank{display:inline-flex;width:34px;height:34px;border-radius:50%;color:#fff;font-weight:800;align-items:center;justify-content:center}
+.row{display:grid;grid-template-columns:110px 1fr 150px;gap:10px;align-items:center;margin:9px 0;font-size:14px}
+.row .v{text-align:right;white-space:nowrap}
+.up{color:var(--ok)}.dn{color:var(--ng)}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th,td{padding:9px 6px;border-bottom:1px solid var(--line);text-align:left}
+th{color:var(--sub);font-weight:600;font-size:12px}
+tr.click:hover{background:var(--main2);cursor:pointer}
+.tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
+.tabs button{padding:8px 16px;border-radius:99px;border:1px solid var(--line);background:var(--card);color:var(--text)}
+.tabs button.on{background:var(--main);color:#fff;border-color:var(--main)}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:12px}
+.kpi{background:var(--bg);border-radius:12px;padding:12px 14px}.kpi b{display:block;font-size:26px}
+.stack{display:flex;height:30px;border-radius:8px;overflow:hidden}
+.stack span{display:flex;align-items:center;justify-content:center;color:#fff;font-size:12px;font-weight:700}
+.warn{background:#fef3c7;color:#92400e;border-radius:10px;padding:8px 12px;font-size:14px}
+.good{background:#dcfce7;color:#166534;border-radius:10px;padding:8px 12px;font-size:14px}
+.timer{font-variant-numeric:tabular-nums;font-weight:700}
+code.k{display:block;word-break:break-all;font-size:11px;background:var(--bg);padding:8px;border-radius:8px;max-height:90px;overflow:auto}
+svg text{fill:var(--text);font-size:12px}
+@media (max-width:560px){.row{grid-template-columns:90px 1fr;}.row .v{grid-column:1/-1;text-align:left}}
+@media print{.noprint{display:none!important}body{background:#fff}.card{box-shadow:none;border:1px solid #ccc;break-inside:avoid}}
+</style>
+</head>
+<body>
+<div class="wrap" id="app"></div>
+<script>
+/* ============ 検査データ ============ */
+const L=(...a)=>a; // [text, rev?]
+const TESTS={
+hire:{name:"採用適性検査",ico:"🧑‍💼",kind:"likert",time:"約8分",desc:"性格・意欲・ストレス耐性・価値観を測定。応募者の職種適合と面接で確認すべき点がわかります。",
+ dims:{
+  lead:{n:"主体性",d:"自分から動き、周囲を巻き込んで進める力",h:"自分から提案・行動した経験と、その結果を聞く",a:"小さな提案を週に1つ出す",q:[["会議では、自分から意見を言うほうだ"],["誰もやりたがらない役目を、自分から引き受けることがある"],["目標を決めたら、周りを巻き込んで進めたい"],["人前で話したり、まとめ役になるのは苦手だ",1]]},
+  coop:{n:"協調性",d:"相手の立場を考え、チームで成果を出す力",h:"意見が対立したときの対応と、チームでの役割を聞く",a:"会議で他者の意見を1つ引き出す",q:[["相手の話は、最後までじっくり聞くようにしている"],["チームのためなら、自分の意見を譲れる"],["困っている人がいると、つい声をかけてしまう"],["他人の失敗やミスが、あまり気にならない・関心がない",1]]},
+  plan:{n:"計画性",d:"段取りを組み、正確にやり遂げる力",h:"期限に追われた経験と、段取りの工夫を聞く",a:"毎朝、優先順位トップ3を書く",q:[["やるべきことは、期限より前に終わらせたい"],["作業の前に、手順や段取りを考える"],["細かいミスがないか、見直す習慣がある"],["計画を立てるより、思いつきで動くことが多い",1]]},
+  flex:{n:"柔軟性",d:"変化や想定外の出来事に素早く対応する力",h:"想定外のトラブルへの対処経験を聞く",a:"月に1回、いつもと違うやり方を試す",q:[["急な予定変更があっても、あまり動揺しない"],["初めての環境でも、すぐ慣れるほうだ"],["予想外のことが起きると、パニックになりやすい",1],["状況に応じて、優先順位をすぐ切り替えられる"]]},
+  idea:{n:"探究心",d:"新しいことを学び、工夫して改善する力",h:"最近自分で学んだことと、仕事を改善した例を聞く",a:"気になったことを毎日1つ調べる",q:[["新しい知識やスキルを学ぶのが好きだ"],["「もっと良い方法はないか」とよく考える"],["わからないことは、納得するまで調べたい"],["いつも通りのやり方を続けるほうが安心する",1]]},
+  mind:{n:"ストレス耐性",d:"プレッシャーの中でも気持ちを安定させる力",h:"強いストレスを感じた場面と、その乗り越え方を聞く",a:"睡眠・運動・相談相手を整える",q:[["仕事で失敗しても、気持ちを切り替えられる"],["厳しい納期でも、落ち着いて対応できる"],["人から強く注意されても、必要以上に落ち込まない"],["些細なことが気になって、眠れなくなることがある",1]]},
+  drive:{n:"達成意欲",d:"目標に向かってやり抜く力",h:"最後までやり抜いた経験と、挫折からの立ち直りを聞く",a:"達成したい目標を数値で1つ決める",q:[["決めた目標は、困難でもやり遂げたい"],["人より高い成果を出したいと思う"],["結果が出ないとき、すぐに諦めてしまう",1],["仕事では、自分を成長させる機会を求めている"]]},
+  g_grow:{n:"成長志向",kind:"motiv",q:[["仕事を通じて、新しい能力を身につけたい"],["難しい仕事に挑戦できる環境で働きたい"]]},
+  g_stab:{n:"安定志向",kind:"motiv",q:[["長く安定して働ける会社がよい"],["収入や雇用が安定していることを重視する"]]},
+  g_rel:{n:"関係志向",kind:"motiv",q:[["職場の人間関係が良いことを重視する"],["仲間と協力して働けることにやりがいを感じる"]]},
+  g_pay:{n:"評価・報酬志向",kind:"motiv",q:[["成果が給与や評価にしっかり反映されてほしい"],["昇進や昇給の機会を重視する"]]},
+  valid:{n:"回答の信頼性",kind:"valid",q:[["これまで一度も嘘をついたことがない"],["他人の悪口を思ったことは一度もない"],["これまでに腹を立てたことは一度もない"],["約束や時間を破ったことは一度もない"]]}
+ },
+ jobs:{"営業職":{lead:.3,drive:.25,mind:.2,flex:.15,coop:.1},"事務・管理部門":{plan:.35,coop:.25,mind:.15,flex:.1,drive:.1,idea:.05},"技術・開発職":{idea:.3,plan:.25,drive:.15,mind:.1,flex:.1,lead:.1},"企画・マーケティング":{idea:.3,lead:.2,flex:.2,drive:.15,coop:.1,mind:.05},"接客・サービス":{coop:.3,flex:.2,mind:.2,drive:.1,lead:.1,plan:.1},"管理職候補":{lead:.3,mind:.2,drive:.2,coop:.15,plan:.15}}},
+basic:{name:"基礎能力検査",ico:"🧮",kind:"ability",time:"1科目 約6分",desc:"言語・数理・図形・論理・英語の5科目。制限時間内に解く、正解のある能力検査です。",limit:360,
+ dims:{b_lang:{n:"言語",d:"語彙・読解・言葉の関係"},b_math:{n:"数理",d:"計算・割合・確率・推論"},b_fig:{n:"図形",d:"空間把握・図形の性質"},b_logic:{n:"論理",d:"推論・命題・場合の数"},b_eng:{n:"英語",d:"基礎的な語彙・文法・読解"}},
+ bank:{
+ b_lang:[
+  {q:"「寛容」の対義語として最も適切なものはどれか。",c:["厳格","謙虚","穏和","慈悲"],a:0},
+  {q:"「慎重」と意味が最も近い語はどれか。",c:["軽率","周到","大胆","鈍感"],a:1},
+  {q:"「顕著」の読み方として正しいものはどれか。",c:["けんしょ","げんちょ","けんちょ","けんじょ"],a:2},
+  {q:"「臨機応変」の意味として正しいものはどれか。",c:["準備を十分に整えること","状況に応じて適切に対処すること","一つのことに集中すること","他人の意見に従うこと"],a:1},
+  {q:"空欄に入る語として最も適切なものを選べ。\n「雨が降っていた。(　)、試合は予定通り行われた。」",c:["だから","しかし","つまり","たとえば"],a:1},
+  {q:"「医者:病院」と同じ関係の組み合わせはどれか。",c:["犬:猫","雨:傘","教師:学校","本:紙"],a:2},
+  {q:"敬語として正しいものはどれか。",c:["お客様が参られました","お客様が申されました","お客様がいらっしゃいました","お客様がいたしました"],a:2},
+  {q:"ことわざ「急がば回れ」の意味として正しいものはどれか。",c:["急ぐときほど確実な方法を選ぶべきだ","早く行動した者が得をする","遠回りは常に無駄である","急ぐと必ず失敗する"],a:0}],
+ b_math:[
+  {q:"定価2,000円の商品を25%引きで買うと、いくらか。",c:["1,400円","1,500円","1,600円","1,750円"],a:1},
+  {q:"時速60kmで90km進むのにかかる時間はどれか。",c:["1時間","1時間15分","1時間30分","2時間"],a:2},
+  {q:"8%の食塩水200gに含まれる食塩は何gか。",c:["8g","12g","16g","20g"],a:2},
+  {q:"次の数列の空欄に入る数は?\n2, 5, 10, 17, 26, (　)",c:["35","36","37","38"],a:2},
+  {q:"ある仕事をAさんは1人で10日、Bさんは1人で15日かかる。2人で一緒にすると何日かかるか。",c:["5日","6日","7日","12.5日"],a:1},
+  {q:"サイコロ2個を同時に振るとき、目の和が7になる確率はどれか。",c:["1/12","1/9","1/6","1/4"],a:2},
+  {q:"今年の売上が前年比120%で600万円だった。前年の売上はいくらか。",c:["480万円","500万円","520万円","720万円"],a:1},
+  {q:"りんご3個とみかん2個で460円、りんご1個とみかん2個で260円。りんご1個の値段は?",c:["80円","100円","120円","150円"],a:1}],
+ b_fig:[
+  {q:"立方体の辺の数はいくつか。",c:["8本","10本","12本","14本"],a:2},
+  {q:"サイコロの向かい合う面の目の和は7である。1の目が上にあるとき、底面の目はいくつか。",c:["2","4","5","6"],a:3},
+  {q:"矢印「↑」を時計回りに90°回転させ、さらに時計回りに180°回転させた。矢印の向きはどれか。",c:["←","→","↓","↑"],a:0},
+  {q:"アルファベットの「b」を鏡に映したとき(左右反転)、見える文字はどれか。",c:["d","p","q","b"],a:0},
+  {q:"3×3のマス目(合計9マス)に含まれる、大小すべての正方形の数はいくつか。",c:["9個","13個","14個","16個"],a:2},
+  {q:"正六角形の内角の和は何度か。",c:["540°","600°","720°","900°"],a:2},
+  {q:"円柱の側面を切り開いたとき、できる図形はどれか。",c:["円","長方形","台形","三角形"],a:1},
+  {q:"直角をはさむ2辺が6cmの直角二等辺三角形の面積はどれか。",c:["12cm²","18cm²","24cm²","36cm²"],a:1}],
+ b_logic:[
+  {q:"「すべてのAはBである」「すべてのBはCである」が正しいとき、確実にいえるものはどれか。",c:["すべてのCはAである","すべてのAはCである","AでないものはCでない","BでないものはAである"],a:1},
+  {q:"5人が一列に並ぶ。AはBより前、BはCより前、DはAより前にいる。確実にいえるのはどれか。",c:["DはCより前にいる","EはDより前にいる","CはAより前にいる","BはDより前にいる"],a:0},
+  {q:"「雨が降れば遠足は中止になる」。遠足は中止にならなかった。確実にいえるのはどれか。",c:["雨が降った","雨が降らなかった","遠足は延期された","何もいえない"],a:1},
+  {q:"ある数に3を足して2倍すると18になる。ある数はいくつか。",c:["5","6","7","9"],a:1},
+  {q:"甲は乙より背が高い。丙は乙より低い。丁は甲より高い。最も背が低いのは誰か。",c:["甲","乙","丙","丁"],a:2},
+  {q:"「勉強する人は合格する」が正しいとき、対偶として正しいものはどれか。",c:["合格する人は勉強している","合格しない人は勉強していない","勉強しない人は合格しない","合格した人は勉強しなかった"],a:1},
+  {q:"A=1, B=2, C=3, D=4 と置き換える暗号で「CAB」が「312」のとき、「DAD」は?",c:["414","441","144","404"],a:0},
+  {q:"3種類のパンと2種類の飲み物から、それぞれ1つずつ選ぶ組み合わせは何通りか。",c:["5通り","6通り","8通り","9通り"],a:1}],
+ b_eng:[
+  {q:"Choose the correct word:\n\"I (　) to the office every day.\"",c:["go","goes","going","gone"],a:0},
+  {q:"\"begin\" と意味が最も近い語はどれか。",c:["finish","start","stop","wait"],a:1},
+  {q:"\"She has lived here (　) 2015.\"",c:["for","from","since","during"],a:2},
+  {q:"\"The meeting was (　) because of the typhoon.\"",c:["cancelled","canceling","cancel","cancels"],a:0},
+  {q:"\"Could you send me the report by Friday?\" の意味として正しいものはどれか。",c:["金曜日にレポートを受け取りました","金曜日までにレポートを送っていただけますか","金曜日はレポートを書きません","レポートは金曜日に届きました"],a:1},
+  {q:"\"increase\" の反対の意味の語はどれか。",c:["rise","grow","decrease","improve"],a:2},
+  {q:"\"If it (　) tomorrow, we will stay home.\"",c:["rain","rains","rained","will rain"],a:1},
+  {q:"\"deadline\" の意味として正しいものはどれか。",c:["開始時刻","締め切り","会議室","予算"],a:1}]
+ }},
+staff:{name:"現有社員適性検査",ico:"🏢",kind:"likert",time:"約6分",desc:"職務・成長・健康・人間関係・組織風土など9領域で、社員のエンゲージメント状態を可視化します。",
+ dims:{
+  duty:{n:"職務",d:"仕事のやりがい・役割の明確さ",a:"役割と期待を上司とすり合わせ、目標を1枚にまとめる",q:[["今の仕事にやりがいを感じる"],["自分の仕事の目標や役割が明確だ"],["仕事の進め方を、自分で工夫できる"]]},
+  grow:{n:"自己成長",d:"成長実感・学ぶ機会・キャリアの見通し",a:"1on1でキャリア面談を行い、学習機会を提供する",q:[["この仕事を通じて成長していると感じる"],["新しいスキルを学ぶ機会がある"],["将来のキャリアに見通しが持てる"]]},
+  health:{n:"健康",d:"業務負担・心身の状態",a:"業務量と残業を点検し、休暇取得を促す",q:[["仕事の負担は適切だと感じる"],["心身ともに健康な状態で働けている"],["休日はしっかり休めている"]]},
+  support:{n:"支援",d:"上司の支援・相談しやすさ",a:"定期的な1on1と、具体的なフィードバックを行う",q:[["困ったとき、上司に相談しやすい"],["上司は私の仕事を十分に支援してくれる"],["上司から適切なフィードバックをもらえる"]]},
+  rel:{n:"人間関係",d:"同僚との信頼・コミュニケーション",a:"部署横断の交流機会を設ける",q:[["職場の同僚と信頼関係がある"],["部署内で気軽にコミュニケーションが取れる"],["他部署とも協力しやすい"]]},
+  recog:{n:"承認",d:"評価の納得感・感謝",a:"サンクスカードや称賛の場を作る",q:[["自分の成果が正当に評価されていると感じる"],["仕事ぶりを認めてもらえている"],["感謝の言葉をかけられることがある"]]},
+  vision:{n:"理念戦略",d:"理念への共感・方向性の理解",a:"経営層から方針を直接伝える場を設ける",q:[["会社の理念やビジョンに共感している"],["会社の方向性や戦略を理解している"],["経営陣を信頼している"]]},
+  culture:{n:"組織風土",d:"挑戦しやすさ・風通し・誇り",a:"失敗を共有して学ぶ場を作る",q:[["失敗を恐れず挑戦できる雰囲気がある"],["意見を自由に言える風通しの良さがある"],["会社の一員であることを誇りに思う"]]},
+  env:{n:"環境",d:"設備・働き方制度・待遇",a:"制度や設備について社員の声を集め、改善する",q:[["設備やツールなど、働く環境に満足している"],["勤務時間や休暇など、働き方の制度に満足している"],["待遇(給与・福利厚生)に納得している"]]},
+  risk:{n:"離職リスク",kind:"risk",q:[["この1年以内に転職を考えたことがある"],["できれば別の会社で働きたいと思うことがある"]]}
+ }},
+med:{name:"医療・介護適性検査",ico:"🩺",kind:"likert",time:"約8分",desc:"共感性・責任感・情緒の安定・注意力・勤務耐性など、医療・介護の現場で求められる資質を測定します。",
+ dims:{
+  emp:{n:"共感性",d:"相手の気持ちに寄り添う力",h:"利用者や家族に寄り添った経験を聞く",a:"相手の話を要約して返す練習をする",q:[["相手が不安そうにしていると、すぐ気づく"],["相手の気持ちに寄り添って話を聴ける"],["弱っている人を見ると、力になりたいと思う"],["相手の感情の揺れには、あまり関心がない",1]]},
+  resp:{n:"責任感・倫理観",d:"守秘義務・ルール遵守・報告",h:"ミスをしたときの報告行動と、守秘義務の考え方を聞く",a:"手順書を読み直し、疑問点を先輩に確認する",q:[["個人情報や守秘義務は、必ず守る"],["ミスをしたら、すぐに報告・相談する"],["ルールや手順は、面倒でも守る"],["見られていなければ、手順を省くことがある",1]]},
+  stab:{n:"情緒の安定",d:"感情的な場面でも落ち着ける力",h:"感情的な相手への対応と、気持ちの切り替え方を聞く",a:"振り返りの時間を決め、同僚に話す習慣を持つ",q:[["感情的な患者・利用者にも、落ち着いて対応できる"],["つらい場面に立ち会っても、気持ちを立て直せる"],["仕事の疲れを、プライベートに持ち込まない"],["他人の言動に、強く動揺してしまう",1]]},
+  team:{n:"協調・連携",d:"多職種との情報共有・相談",h:"他職種と連携した経験と、相談のタイミングを聞く",a:"報連相のタイミングを決めてチームで共有する",q:[["他職種のスタッフと、積極的に情報共有する"],["自分の判断が不安なとき、周りに相談できる"],["チームの方針には、協力して従える"],["報告や連絡を後回しにしがちだ",1]]},
+  care:{n:"注意力・正確性",d:"変化への気づき・確認・優先順位",h:"ミスを防ぐために普段している工夫を聞く",a:"ダブルチェックと指差し確認を徹底する",q:[["細かい変化や違和感に気づくほうだ"],["数字や名前などを、何度も確認する"],["複数のことが同時に起きても、優先順位をつけられる"],["うっかりミスをすることが多い",1]]},
+  stam:{n:"勤務耐性",d:"シフト勤務・体力への適応",h:"夜勤・シフト勤務への考えと、体調管理の方法を聞く",a:"睡眠リズムと運動習慣を整える",q:[["夜勤やシフト勤務など、不規則な生活にも対応できる"],["体力には自信がある"],["立ち仕事や身体介助など、体を使う仕事も苦にならない"],["睡眠が乱れると、仕事に大きく影響する",1]]},
+  learn:{n:"学習意欲",d:"知識・資格・成長への意欲",h:"最近学んだことと、今後取りたい資格を聞く",a:"月に1つ、学びたいテーマを決めて学習する",q:[["新しい医療・介護の知識を、自分から学びたい"],["資格取得やスキルアップに意欲がある"],["先輩や他職種から、積極的に教わる"],["一度覚えた方法を、変えたくない",1]]},
+  valid:{n:"回答の信頼性",kind:"valid",q:[["これまで患者や利用者に対して、嫌な気持ちを抱いたことは一度もない"],["仕事でミスをしたことは一度もない"],["どんなときも、イライラしたことはない"]]}
+ },
+ jobs:{"病棟・夜勤あり":{stab:.25,stam:.25,care:.2,resp:.15,team:.15},"外来・クリニック":{emp:.25,team:.25,care:.2,resp:.15,stab:.15},"訪問・在宅":{resp:.25,emp:.2,learn:.2,stab:.2,care:.15},"介護施設":{emp:.3,team:.2,stam:.2,stab:.15,resp:.15},"教育・リーダー":{team:.25,resp:.25,learn:.25,stab:.15,emp:.1}}}
+};
+const BENCH0={hire:60,basic:60,staff:70,med:60};
+const OPTS=["あてはまらない","あまりあてはまらない","どちらともいえない","ややあてはまる","あてはまる"];
+const RC={A:"#16a34a",B:"#2563eb",C:"#ca8a04",D:"#ea580c",E:"#dc2626",F:"#991b1b"};
+
+/* ============ ユーティリティ ============ */
+const $=id=>document.getElementById(id);
+const esc=s=>String(s==null?"":s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const mainKeys=t=>Object.keys(TESTS[t].dims).filter(k=>!TESTS[t].dims[k].kind||TESTS[t].dims[k].kind==="main");
+const pad=n=>String(n).padStart(2,"0");
+const fdate=ts=>{const d=new Date(ts);return `${d.getFullYear()}/${pad(d.getMonth()+1)}/${pad(d.getDate())} ${pad(d.getHours())}:${pad(d.getMinutes())}`};
+const fday=ts=>fdate(ts).slice(0,10);
+const mean=a=>a.length?a.reduce((x,y)=>x+y,0)/a.length:0;
+function rk(t,o){if(t==="staff"){return o>=85?"A":o>=75?"B":o>=65?"C":o>=55?"D":o>=45?"E":"F"}return o>=80?"A":o>=65?"B":o>=50?"C":o>=35?"D":"E"}
+const rkBadge=(t,o)=>{const r=rk(t,o);return `<span class="rank" style="background:${RC[r]}">${r}</span>`};
+const level=p=>p>=80?"非常に高い":p>=60?"高い":p>=40?"標準":p>=20?"やや低い":"低い";
+const sget=(k,d)=>{try{const v=localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}};
+const sset=(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}};
+const sdel=k=>{try{localStorage.removeItem(k)}catch(e){}};
+const getDB=()=>sget("apt2-results",[]);
+const setDB=d=>sset("apt2-results",d);
+const getSet=()=>Object.assign({org:"",pass:null,show:true,bench:{}},sget("apt2-settings",{}));
+const setSet=s=>sset("apt2-settings",s);
+const bench=t=>{const s=getSet();return s.bench&&s.bench[t]!=null?+s.bench[t]:BENCH0[t]};
+async function hashPw(s){try{if(window.crypto&&crypto.subtle){const b=await crypto.subtle.digest("SHA-256",new TextEncoder().encode("apt2:"+s));return [...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,"0")).join("")}}catch(e){}let h=5381;for(const c of s)h=(h*33)^c.charCodeAt(0);return "w"+(h>>>0)}
+const enc=r=>"APT1:"+btoa(unescape(encodeURIComponent(JSON.stringify(r))));
+function dec(tok){tok=tok.trim();if(!tok.startsWith("APT1:"))return null;try{const r=JSON.parse(decodeURIComponent(escape(atob(tok.slice(5)))));return r&&TESTS[r.t]&&r.id&&r.s?r:null}catch(e){return null}}
+function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,7);
+
+/* ============ グラフ(SVG) ============ */
+function ring(score,t){const r=rk(t,score),R=60,C=2*Math.PI*R;
+ return `<svg viewBox="0 0 160 160" style="width:100%;max-width:200px"><circle cx="80" cy="80" r="${R}" fill="none" stroke="#e5e7eb" stroke-width="14"/><circle cx="80" cy="80" r="${R}" fill="none" stroke="#14b8a6" stroke-width="14" stroke-linecap="round" stroke-dasharray="${C*score/100} ${C}" transform="rotate(-90 80 80)"/><text x="80" y="92" text-anchor="middle" style="font-size:40px;font-weight:700;fill:#14b8a6">${score}</text><circle cx="30" cy="28" r="15" fill="${RC[r]}"/><text x="30" y="34" text-anchor="middle" style="fill:#fff;font-size:17px;font-weight:800">${r}</text></svg>`}
+function radar(names,vals,vals2){const n=names.length,cx=200,cy=190,R=120;
+ const pt=(i,r)=>{const a=-Math.PI/2+2*Math.PI*i/n;return[cx+r*Math.cos(a),cy+r*Math.sin(a)]};let g="";
+ [.25,.5,.75,1].forEach(f=>{g+=`<polygon points="${names.map((_,i)=>pt(i,R*f).join(",")).join(" ")}" fill="none" stroke="#9ca3af" opacity=".35"/>`});
+ names.forEach((nm,i)=>{const[x,y]=pt(i,R);g+=`<line x1="${cx}" y1="${cy}" x2="${x}" y2="${y}" stroke="#9ca3af" opacity=".35"/>`;const[lx,ly]=pt(i,R+28);g+=`<text x="${lx}" y="${ly}" text-anchor="middle" dominant-baseline="middle">${esc(nm)}</text>`});
+ if(vals2)g+=`<polygon points="${vals2.map((v,i)=>pt(i,R*v/100).join(",")).join(" ")}" fill="none" stroke="#9ca3af" stroke-width="2" stroke-dasharray="5 4"/>`;
+ g+=`<polygon points="${vals.map((v,i)=>pt(i,R*v/100).join(",")).join(" ")}" fill="#14b8a6" fill-opacity=".3" stroke="#14b8a6" stroke-width="2"/>`;
+ vals.forEach((v,i)=>{const[x,y]=pt(i,R*v/100);g+=`<circle cx="${x}" cy="${y}" r="4" fill="#14b8a6"/>`});
+ return `<svg viewBox="0 0 400 380" style="width:100%"><title>レーダーチャート</title>${g}</svg>`}
+function line(points,mn,mx,bm){ // points:[{l,y}]
+ const W=420,H=190,pl=34,pr=12,pt=12,pb=28;if(!points.length)return "";
+ const X=i=>pl+(points.length===1?(W-pl-pr)/2:(W-pl-pr)*i/(points.length-1)),Y=v=>pt+(H-pt-pb)*(1-(v-mn)/(mx-mn));let g="";
+ for(let k=0;k<=4;k++){const v=mn+(mx-mn)*k/4,y=Y(v);g+=`<line x1="${pl}" x2="${W-pr}" y1="${y}" y2="${y}" stroke="#9ca3af" opacity=".3"/><text x="${pl-5}" y="${y+4}" text-anchor="end" style="font-size:10px">${Math.round(v)}</text>`}
+ if(bm!=null)g+=`<line x1="${pl}" x2="${W-pr}" y1="${Y(bm)}" y2="${Y(bm)}" stroke="#eab308" stroke-dasharray="4 3"/>`;
+ g+=`<polyline fill="none" stroke="#14b8a6" stroke-width="2.5" points="${points.map((p,i)=>X(i)+","+Y(p.y)).join(" ")}"/>`;
+ points.forEach((p,i)=>{g+=`<circle cx="${X(i)}" cy="${Y(p.y)}" r="4" fill="#14b8a6"/><text x="${X(i)}" y="${H-8}" text-anchor="middle" style="font-size:10px">${esc(p.l)}</text>`});
+ return `<svg viewBox="0 0 ${W} ${H}" style="width:100%"><title>スコアの推移</title>${g}</svg>`}
+
+/* ============ 採点 ============ */
+function buildQs(t){const out=[];let id=0;const D=TESTS[t].dims;for(const k in D)if(D[k].q)D[k].q.forEach(x=>out.push({id:id++,dim:k,text:x[0],rev:!!x[1]}));return out}
+function scoreLikert(t,qs,ans){const D=TESTS[t].dims,s={};
+ for(const k in D){const q=qs.filter(x=>x.dim===k);if(!q.length)continue;const kind=D[k].kind;
+  const sum=q.reduce((a,x)=>a+((x.rev&&kind!=="valid"&&kind!=="risk")?4-ans[x.id]:ans[x.id]),0);s[k]=Math.round(sum/(q.length*4)*100)}
+ const mk=mainKeys(t),vals=qs.filter(x=>mk.includes(x.dim)).map(x=>ans[x.id]);
+ const cnt={};vals.forEach(v=>cnt[v]=(cnt[v]||0)+1);
+ return {s,o:Math.round(mean(mk.map(k=>s[k]))),x:{sl:Math.max(...Object.values(cnt))>=vals.length*0.9}}}
+function prevOf(r){const nm=(r.n||"").trim().toLowerCase();if(!nm)return null;return getDB().filter(x=>x.t===r.t&&x.id!==r.id&&(x.n||"").trim().toLowerCase()===nm&&x.ts<r.ts).sort((a,b)=>b.ts-a.ts)[0]||null}
+function orgAvg(t,exclId){const d=getDB().filter(x=>x.t===t&&x.id!==exclId);if(d.length<3)return null;const a={};Object.keys(TESTS[t].dims).forEach(k=>{const v=d.filter(x=>x.s[k]!=null).map(x=>x.s[k]);if(v.length)a[k]=Math.round(mean(v))});a._o=Math.round(mean(d.map(x=>x.o)));a._n=d.length;return a}
+
+/* ============ 結果画面 ============ */
+function resultView(r,adm){
+ const T=TESTS[r.t],D=T.dims,mk=mainKeys(r.t),prev=prevOf(r),avg=orgAvg(r.t,r.id),bm=bench(r.t);
+ const diff=(a,b)=>{const d=a-b;return d===0?`<span class="sub">±0</span>`:`<span class="${d>0?"up":"dn"}">${d>0?"▲+":"▼"}${d}</span>`};
+ let h=`<div class="card"><div class="sub">${esc(T.name)} / ${fdate(r.ts)}${r.d?" / "+esc(r.d):""}${r.r?" / "+esc(r.r):""}</div><h1>${esc(r.n||"受検者")} さんの結果</h1>
+ <div class="hero"><div style="text-align:center">${ring(r.o,r.t)}<div class="sub">総合スコア ${r.o}</div><div class="sub">ベンチマーク ${bm}(${diff(r.o,bm)})</div>${prev?`<div class="sub">前回(${fday(prev.ts)}) ${prev.o} → ${diff(r.o,prev.o)}</div>`:""}</div>
+ <div>${radar(mk.map(k=>D[k].n),mk.map(k=>r.s[k]),avg?mk.map(k=>avg[k]):null)}${avg?`<div class="sub" style="text-align:center">点線=自社平均(${avg._n}件)</div>`:""}</div></div></div>`;
+ h+=`<div class="card"><h2>${r.t==="basic"?"科目別の結果":"項目別スコア"}</h2>`;
+ mk.forEach(k=>{const v=r.s[k];
+  let right=`${v}点 ${r.t==="basic"?"":"("+level(v)+")"}`;
+  if(r.t==="basic"&&r.x&&r.x.raw&&r.x.raw[k])right=`${r.x.raw[k][0]}/${r.x.raw[k][1]}問 (${v}%)`;
+  const extra=(prev&&prev.s[k]!=null?` 前回比${diff(v,prev.s[k])}`:"")+(avg&&avg[k]!=null?` 平均比${diff(v,avg[k])}`:"");
+  h+=`<div class="row"><div><b>${D[k].n}</b></div><div class="bar"><i style="width:${v}%"></i></div><div class="v">${right}</div></div><div class="sub" style="margin:-6px 0 4px 120px">${esc(D[k].d)}${extra}</div>`});
+ h+=`</div>`;
+ if(r.t==="basic"&&r.x&&r.x.secs!=null)h+=`<div class="card"><p>所要時間:${Math.floor(r.x.secs/60)}分${r.x.secs%60}秒 / 受検科目数:${mk.length}</p><p class="sub">${r.x.timeout?"時間切れで自動提出された科目があります。":""}正答率の目安: 80%以上=高い、50〜79%=標準、49%以下=基礎の復習が必要。</p></div>`;
+ const motiv=Object.keys(D).filter(k=>D[k].kind==="motiv");
+ if(motiv.length){const top=motiv.slice().sort((a,b)=>r.s[b]-r.s[a])[0];
+  h+=`<div class="card"><h2>モチベーション(仕事の価値観)</h2><p>最も強い志向は <b>${esc(D[top].n)}</b> です。</p>`+motiv.map(k=>`<div class="row"><div>${esc(D[k].n)}</div><div class="bar"><i style="width:${r.s[k]}%;background:var(--teal)"></i></div><div class="v">${r.s[k]}点</div></div>`).join("")+`<p class="sub">入社後の配置・育成・動機づけの参考にしてください。</p></div>`}
+ if(T.jobs){const fit=Object.entries(T.jobs).map(([j,w])=>[j,Math.round(Object.entries(w).reduce((a,[k,x])=>a+x*r.s[k],0))]).sort((a,b)=>b[1]-a[1]);
+  h+=`<div class="card"><h2>${r.t==="med"?"向いている職場・役割":"職種適合度"}</h2>`+fit.map((f,i)=>`<div class="row"><div>${i<2?"★ ":""}${esc(f[0])}</div><div class="bar"><i style="width:${f[1]}%;background:${i<2?"var(--teal)":"var(--main)"}"></i></div><div class="v">${f[1]}%</div></div>`).join("")+`</div>`}
+ if(r.x&&r.x.v!=null){const v=r.x.v,bad=v>=85,mid=v>=70;
+  h+=`<div class="card"><h2>回答の信頼性</h2><div class="${bad?"warn":mid?"warn":"good"}">${bad?"⚠ 自分をよく見せようとした回答傾向が強く、結果の解釈に注意が必要です。":mid?"やや良く見せようとする傾向があります。面接で確認すると安心です。":"信頼できる回答です。"} (信頼係数 ${100-v})</div>${r.x.sl?`<div class="warn" style="margin-top:8px">⚠ 同じ選択肢に回答が偏っています。集中して回答していない可能性があります。</div>`:""}</div>`}
+ if(r.x&&r.x.risk!=null){const v=r.x.risk,lv=v>=60?["高","warn"]:v>=30?["中","warn"]:["低","good"];
+  h+=`<div class="card"><h2>離職リスク</h2><div class="${lv[1]}">離職リスク:<b>${lv[0]}</b>(${v}点)</div></div>`}
+ const low=mk.slice().sort((a,b)=>r.s[a]-r.s[b]).slice(0,2);
+ if(r.t==="staff"||r.t==="basic"){ if(r.t==="staff")h+=`<div class="card"><h2>改善のヒント(スコアが低い項目)</h2>`+low.map(k=>`<p><b>${D[k].n}(${r.s[k]}点)</b><br>${esc(D[k].a)}</p>`).join("")+`</div>`;
+  else h+=`<div class="card"><h2>学習のヒント</h2><p>最も伸びしろがあるのは「${D[low[0]].n}」です。問題集で基礎を復習し、時間を計って解く練習をしましょう。</p></div>`}
+ else{ if(adm){const lows=mk.filter(k=>r.s[k]<45);
+  h+=`<div class="card"><h2>面接で確認したいポイント</h2>`+(lows.length?lows.map(k=>`<p><b>${D[k].n}(${r.s[k]}点)</b><br>${esc(D[k].h)}</p>`).join(""):`<p>低い項目はありません。強みの具体例(「${D[mk.slice().sort((a,b)=>r.s[b]-r.s[a])[0]].n}」)を深掘りしましょう。</p>`)+`</div>`}
+  else h+=`<div class="card"><h2>伸ばすヒント</h2><p>最も伸びしろがあるのは「${D[low[0]].n}」です。${esc(D[low[0]].a)}。</p></div>`}
+ h+=`<div class="card noprint"><details><summary>結果コード(管理者へ送る用)</summary><p class="sub">このコードを管理者に送ると、管理画面で結果を取り込めます。</p><code class="k" id="code">${enc(r)}</code><button class="btn ghost sm" onclick="copyCode()">コピー</button></details></div>`;
+ return h}
+function copyCode(){const t=$("code").textContent;if(navigator.clipboard)navigator.clipboard.writeText(t).then(()=>alert("コピーしました"));else{const s=window.getSelection(),rg=document.createRange();rg.selectNodeContents($("code"));s.removeAllRanges();s.addRange(rg);document.execCommand("copy");alert("コピーしました")}}
+
+/* ============ 画面制御 ============ */
+let ST={v:"home"},admOK=false;
+function go(v,p){ST=Object.assign({v},p||{});render();window.scrollTo(0,0)}
+function render(){
+ const A=$("app");A.className="wrap"+(ST.v==="admin"?" wide":"");
+ ({home:rHome,info:rInfo,quiz:rQuiz,aprep:rAprep,aq:rAq,anext:rAnext,done:rDone,view:rView,adminlogin:rAdminLogin,admin:rAdmin}[ST.v])();
+}
+function rHome(){
+ const s=getSet(),p=sget("apt2-progress",null);
+ $("app").innerHTML=`<div class="top"><div><h1>${esc(s.org||"適性検査センター")}</h1><div class="sub">受検する検査を選んでください</div></div><button class="link" onclick="go('adminlogin')">管理者ログイン</button></div>
+ ${p?`<div class="card"><b>途中の検査があります(${esc(TESTS[p.t].name)} ${p.pos}/${p.order.length}問)</b><button class="btn" onclick="resume()">続きから再開</button><button class="btn ghost" onclick="sdel('apt2-progress');render()">破棄する</button></div>`:""}
+ <div class="grid g2">${Object.entries(TESTS).map(([k,t])=>`<div class="tcard"><div class="ico">${t.ico}</div><h2>${t.name}</h2><p class="sub">${t.desc}</p><p class="sub">${t.kind==="ability"?"5科目 40問":"質問 "+buildQs(k).length+"問"} / ${t.time}</p><button class="btn" onclick="go('info',{t:'${k}'})">受検する</button></div>`).join("")}</div>
+ <p class="sub" style="margin-top:16px">※正解・不正解のない検査は、直感で答えてください。結果は管理者の設定により表示されます。</p>`}
+function rInfo(){const t=ST.t,T=TESTS[t],st=t==="staff";
+ $("app").innerHTML=`<div class="card"><button class="link" onclick="go('home')">← 戻る</button><h1>${T.ico} ${T.name}</h1><p class="sub">${T.desc}</p>
+ <label>お名前(必須)</label><input id="f_n" type="text" autocomplete="name" placeholder="例:山田 太郎">
+ <label>${st?"所属部署":"所属・応募区分(任意)"}</label><input id="f_d" type="text" placeholder="${st?"例:営業部":"例:2027年新卒"}">
+ ${(t==="hire"||t==="med")?`<label>志望職種(任意)</label><input id="f_r" type="text" placeholder="例:${t==="med"?"看護師・介護職員":"営業職"}">`:""}
+ ${t==="basic"?`<label>受検する科目</label><select id="f_s"><option value="all">全5科目(約30分)</option>${Object.entries(T.dims).map(([k,d])=>`<option value="${k}">${d.n}のみ(約6分)</option>`).join("")}</select><p class="sub">各科目8問・制限時間6分。時間が過ぎると自動で提出されます。</p>`:""}
+ <button class="btn" onclick="startTest()">検査を始める</button></div>`}
+function startTest(){const n=$("f_n").value.trim();if(!n){alert("お名前を入力してください");return}
+ const info={n,d:$("f_d").value.trim(),r:$("f_r")?$("f_r").value.trim():""},t=ST.t;
+ if(TESTS[t].kind==="ability"){const v=$("f_s").value;const subs=v==="all"?Object.keys(TESTS[t].dims):[v];
+  ST={v:"aprep",t,info,subs,si:0,ans:{},secs:0,timeout:false};render();window.scrollTo(0,0);return}
+ const qs=buildQs(t),order=shuffle(qs.map(q=>q.id));ST={v:"quiz",t,info,order,ans:{},pos:0};saveProg();render();window.scrollTo(0,0)}
+function saveProg(){sset("apt2-progress",{t:ST.t,info:ST.info,order:ST.order,ans:ST.ans,pos:ST.pos})}
+function resume(){const p=sget("apt2-progress",null);if(p)go("quiz",p)}
+function rQuiz(){const qs=buildQs(ST.t),q=qs[ST.order[ST.pos]],n=ST.order.length;
+ $("app").innerHTML=`<div class="card"><div class="top"><span class="sub">${esc(TESTS[ST.t].name)}</span><span class="sub">${ST.pos+1} / ${n}</span></div><div class="bar"><i style="width:${ST.pos/n*100}%"></i></div>
+ <div class="q">${esc(q.text)}</div><div class="opts">${[4,3,2,1,0].map(v=>`<button class="opt${ST.ans[q.id]===v?" sel":""}" onclick="pick(${q.id},${v})">${OPTS[v]}</button>`).join("")}</div>
+ <div class="nav"><button class="btn ghost" onclick="qback()" ${ST.pos===0?"disabled":""}>戻る</button><button class="btn ghost" onclick="saveProg();go('home')">中断して保存</button></div></div>`}
+function pick(id,v){ST.ans[id]=v;if(ST.pos<ST.order.length-1){ST.pos++;saveProg();setTimeout(render,100)}else finishLikert()}
+function qback(){if(ST.pos>0){ST.pos--;saveProg();render()}}
+function finishLikert(){const t=ST.t,qs=buildQs(t),sc=scoreLikert(t,qs,ST.ans),x={sl:sc.x.sl};
+ if(sc.s.valid!=null)x.v=sc.s.valid;if(sc.s.risk!=null)x.risk=sc.s.risk;
+ const r={id:uid(),t,n:ST.info.n,d:ST.info.d,r:ST.info.r,ts:Date.now(),s:sc.s,o:sc.o,x};
+ const db=getDB();db.push(r);setDB(db);sdel("apt2-progress");go(getSet().show?"view":"done",{r})}
+/* 能力検査 */
+function rAprep(){const k=ST.subs[ST.si],T=TESTS.basic;
+ $("app").innerHTML=`<div class="card"><h1>${T.dims[k].n}(${ST.si+1}/${ST.subs.length})</h1><p>${esc(T.dims[k].d)}</p><p>問題数:8問 / 制限時間:${T.limit/60}分</p><p class="sub">「開始」を押すとすぐにタイマーが始まります。</p><button class="btn" onclick="abStart()">開始</button></div>`}
+let TM=null;
+function abStart(){ST.qi=0;ST.left=TESTS.basic.limit;ST.t0=Date.now();ST.v="aq";render();clearInterval(TM);TM=setInterval(()=>{ST.left=Math.max(0,TESTS.basic.limit-Math.floor((Date.now()-ST.t0)/1000));const e=$("tm");if(e)e.textContent=fmt(ST.left);if(ST.left<=0){clearInterval(TM);ST.timeout=true;abSubmit()}},500)}
+const fmt=s=>pad(Math.floor(s/60))+":"+pad(s%60);
+function rAq(){const k=ST.subs[ST.si],q=TESTS.basic.bank[k][ST.qi],a=(ST.ans[k]=ST.ans[k]||{});const last=ST.qi===7;
+ $("app").innerHTML=`<div class="card"><div class="top"><span class="sub">${TESTS.basic.dims[k].n} ${ST.qi+1} / 8</span><span class="timer" id="tm">${fmt(ST.left)}</span></div><div class="bar"><i style="width:${ST.qi/8*100}%"></i></div>
+ <div class="q">${esc(q.q)}</div><div class="opts">${q.c.map((c,i)=>`<button class="opt${a[ST.qi]===i?" sel":""}" onclick="abPick(${i})">${"①②③④"[i]} ${esc(c)}</button>`).join("")}</div>
+ <div class="nav"><button class="btn ghost" onclick="abMove(-1)" ${ST.qi===0?"disabled":""}>戻る</button>${last?`<button class="btn" onclick="abSubmit()">この科目を提出</button>`:`<button class="btn" onclick="abMove(1)">次へ</button>`}</div></div>`}
+function abPick(i){const k=ST.subs[ST.si];ST.ans[k][ST.qi]=i;render()}
+function abMove(d){ST.qi+=d;render()}
+function abSubmit(){clearInterval(TM);ST.secs+=Math.min(TESTS.basic.limit,Math.floor((Date.now()-ST.t0)/1000));
+ if(ST.si<ST.subs.length-1){ST.si++;ST.v="anext";render()}else finishAbility()}
+function rAnext(){$("app").innerHTML=`<div class="card"><h2>${TESTS.basic.dims[ST.subs[ST.si-1]].n} を提出しました</h2><p>次の科目:<b>${TESTS.basic.dims[ST.subs[ST.si]].n}</b></p><p class="sub">準備ができたら次へ進んでください。</p><button class="btn" onclick="ST.v='aprep';render()">次の科目へ</button></div>`}
+function finishAbility(){const s={},raw={};
+ ST.subs.forEach(k=>{const b=TESTS.basic.bank[k],a=ST.ans[k]||{};const c=b.filter((q,i)=>a[i]===q.a).length;raw[k]=[c,b.length];s[k]=Math.round(c/b.length*100)});
+ const o=Math.round(mean(ST.subs.map(k=>s[k])));
+ const r={id:uid(),t:"basic",n:ST.info.n,d:ST.info.d,r:"",ts:Date.now(),s,o,x:{raw,secs:ST.secs,timeout:ST.timeout}};
+ const db=getDB();db.push(r);setDB(db);go(getSet().show?"view":"done",{r})}
+function rDone(){$("app").innerHTML=`<div class="card"><h1>受検ありがとうございました</h1><p>検査は正常に終了しました。結果は担当者からお知らせします。</p><p class="sub">結果コード(別の端末の管理者に送る場合):</p><code class="k" id="code">${enc(ST.r)}</code><button class="btn ghost sm" onclick="copyCode()">コピー</button><button class="btn" onclick="go('home')">トップへ</button></div>`}
+function rView(){$("app").innerHTML=`<div class="top noprint"><button class="link" onclick="go('${ST.back||"home"}')">← ${ST.back?"管理画面へ":"トップへ"}</button><button class="btn sm" onclick="window.print()">印刷 / PDF保存</button></div>`+resultView(ST.r,!!ST.adm)}
+
+/* ============ 管理者 ============ */
+async function rAdminLogin(){const s=getSet();
+ $("app").innerHTML=`<div class="card"><button class="link" onclick="go('home')">← 戻る</button><h1>管理者${s.pass?"ログイン":"パスワード設定"}</h1>${s.pass?"":`<p class="sub">初回です。管理者用のパスワードを決めてください。</p>`}<label>パスワード</label><input id="pw" type="password" autocomplete="current-password"><button class="btn" onclick="adminLogin()">${s.pass?"ログイン":"設定してログイン"}</button><p class="sub">※このパスワードはこのブラウザ内の簡易ロックです。厳重な情報管理には、サーバー型のシステムをご利用ください。</p></div>`}
+async function adminLogin(){const pw=$("pw").value;if(pw.length<4){alert("4文字以上で入力してください");return}const s=getSet(),h=await hashPw(pw);
+ if(!s.pass){s.pass=h;setSet(s);admOK=true;go("admin",{tab:"list"})}else if(s.pass===h){admOK=true;go("admin",{tab:"list"})}else alert("パスワードが違います")}
+const AF={t:"",d:"",q:""};
+function filtered(){return getDB().filter(r=>(!AF.t||r.t===AF.t)&&(!AF.d||(r.d||"")===AF.d)&&(!AF.q||(r.n||"").includes(AF.q))).sort((a,b)=>b.ts-a.ts)}
+function rAdmin(){if(!admOK){go("adminlogin");return}
+ const tabs=[["list","受検一覧"],["stats","集計・分析"],["set","設定"],["data","データ管理"]];
+ $("app").innerHTML=`<div class="top"><h1>管理画面</h1><button class="link" onclick="admOK=false;go('home')">ログアウト</button></div>
+ <div class="tabs">${tabs.map(t=>`<button class="${ST.tab===t[0]?"on":""}" onclick="ST.tab='${t[0]}';render()">${t[1]}</button>`).join("")}</div><div id="tab"></div>`;
+ ({list:tList,stats:tStats,set:tSet,data:tData}[ST.tab])()}
+function filterBar(){const depts=[...new Set(getDB().map(r=>r.d).filter(Boolean))];
+ return `<div class="card"><div class="grid g2"><div><label>検査</label><select onchange="AF.t=this.value;render()"><option value="">すべて</option>${Object.entries(TESTS).map(([k,t])=>`<option value="${k}" ${AF.t===k?"selected":""}>${t.name}</option>`).join("")}</select></div>
+ <div><label>所属</label><select onchange="AF.d=this.value;render()"><option value="">すべて</option>${depts.map(d=>`<option ${AF.d===d?"selected":""}>${esc(d)}</option>`).join("")}</select></div>
+ <div><label>氏名検索</label><input type="text" value="${esc(AF.q)}" onchange="AF.q=this.value;render()"></div></div></div>`}
+function tList(){const rows=filtered();
+ $("tab").innerHTML=filterBar()+`<div class="card"><p class="sub">${rows.length}件</p><div style="overflow-x:auto"><table><tr><th>日時</th><th>検査</th><th>氏名</th><th>所属</th><th>総合</th><th>判定</th><th>注意</th></tr>${rows.map(r=>`<tr class="click" onclick="openR('${r.id}')"><td>${fdate(r.ts)}</td><td>${TESTS[r.t].name}</td><td>${esc(r.n)}</td><td>${esc(r.d)}</td><td>${r.o}</td><td>${rkBadge(r.t,r.o)}</td><td>${(r.x&&r.x.v>=85)||(r.x&&r.x.sl)?"⚠":""}${r.x&&r.x.risk>=60?"離職高":""}</td></tr>`).join("")||`<tr><td colspan="7" class="sub">データがありません。「データ管理」からデモデータを作成できます。</td></tr>`}</table></div></div>`}
+function openR(id){const r=getDB().find(x=>x.id===id);if(r)go("view",{r,adm:true,back:"admin",tab:"list"})}
+function tStats(){
+ const t=AF.t||"hire";AF.t=t;let rows=filtered();const T=TESTS[t],mk=mainKeys(t),bm=bench(t);
+ const sel=filterBar().replace(`<option value="">すべて</option>`,"");
+ if(!rows.length){$("tab").innerHTML=sel+`<div class="card">対象データがありません。</div>`;return}
+ const avgO=Math.round(mean(rows.map(r=>r.o))),ranks=t==="staff"?"ABCDEF":"ABCDE",cnt={};ranks.split("").forEach(k=>cnt[k]=0);rows.forEach(r=>cnt[rk(t,r.o)]++);
+ const dimAvg=mk.map(k=>Math.round(mean(rows.filter(r=>r.s[k]!=null).map(r=>r.s[k]))));
+ const byM={};rows.slice().sort((a,b)=>a.ts-b.ts).forEach(r=>{const d=new Date(r.ts),k=d.getFullYear()+"/"+pad(d.getMonth()+1);(byM[k]=byM[k]||[]).push(r.o)});
+ const tr=Object.entries(byM).map(([l,v])=>({l,y:Math.round(mean(v))}));
+ let extra="";
+ if(t==="staff"){const rk2=rows.filter(r=>r.x&&r.x.risk!=null);const hi=rk2.filter(r=>r.x.risk>=60).length;extra=`<div class="kpi"><span class="sub">離職リスク高</span><b>${hi}名</b><span class="sub">${rk2.length?Math.round(hi/rk2.length*100):0}%</span></div>`}
+ if(t==="hire"||t==="med"){const w=rows.filter(r=>r.x&&(r.x.v>=85||r.x.sl)).length;extra=`<div class="kpi"><span class="sub">回答に注意が必要</span><b>${w}名</b></div>`}
+ const names=[...new Set(rows.map(r=>r.n).filter(Boolean))].filter(n=>rows.filter(r=>r.n===n).length>=2);
+ $("tab").innerHTML=sel+`<div class="kpis"><div class="kpi"><span class="sub">受検数</span><b>${rows.length}</b></div><div class="kpi"><span class="sub">平均スコア</span><b>${avgO}</b><span class="sub">ベンチ${bm}(${avgO-bm>=0?"+":""}${avgO-bm})</span></div><div class="kpi"><span class="sub">平均判定</span><b>${rk(t,avgO)}</b></div>${extra}</div>
+ <div class="grid g2"><div class="card"><h2>スコア分布(判定別)</h2><div class="stack">${ranks.split("").filter(k=>cnt[k]).map(k=>`<span style="background:${RC[k]};width:${cnt[k]/rows.length*100}%">${k} ${cnt[k]}</span>`).join("")}</div><p class="sub">${ranks.split("").map(k=>`${k}:${cnt[k]}名`).join(" / ")}</p>
+ <h2 style="margin-top:18px">項目別 平均</h2>${mk.map((k,i)=>`<div class="row"><div>${T.dims[k].n}</div><div class="bar"><i style="width:${dimAvg[i]}%"></i></div><div class="v">${dimAvg[i]}</div></div>`).join("")}</div>
+ <div class="card"><h2>平均レーダー</h2>${radar(mk.map(k=>T.dims[k].n),dimAvg)}</div></div>
+ <div class="card"><h2>スコアの推移(月別平均)</h2>${line(tr,0,100,bm)}<p class="sub">黄色の点線=ベンチマーク</p>
+ ${names.length?`<h3>個人の推移</h3><select onchange="personTrend(this.value)"><option value="">選択してください</option>${names.map(n=>`<option>${esc(n)}</option>`).join("")}</select><div id="ptr"></div>`:""}</div>`}
+function personTrend(n){if(!n){$("ptr").innerHTML="";return}const t=AF.t,r=getDB().filter(x=>x.t===t&&x.n===n).sort((a,b)=>a.ts-b.ts);$("ptr").innerHTML=line(r.map(x=>({l:fday(x.ts).slice(2),y:x.o})),0,100,bench(t))}
+function tSet(){const s=getSet();
+ $("tab").innerHTML=`<div class="card"><h2>基本設定</h2><label>組織名(トップ画面に表示)</label><input id="s_org" type="text" value="${esc(s.org)}">
+ <label>受検後に結果を本人へ表示</label><select id="s_show"><option value="1" ${s.show?"selected":""}>表示する(自己診断モード)</option><option value="0" ${!s.show?"selected":""}>表示しない(採用など)</option></select>
+ <h3>ベンチマーク(総合スコアの基準値)</h3><div class="grid g2">${Object.entries(TESTS).map(([k,t])=>`<div><label>${t.name}</label><input id="s_b_${k}" type="number" min="0" max="100" value="${bench(k)}"></div>`).join("")}</div>
+ <button class="btn" onclick="saveSet()">保存</button></div>
+ <div class="card"><h2>パスワード変更</h2><input id="s_pw" type="password" placeholder="新しいパスワード(4文字以上)"><button class="btn ghost" onclick="chgPw()">変更</button></div>`}
+function saveSet(){const s=getSet();s.org=$("s_org").value.trim();s.show=$("s_show").value==="1";s.bench={};Object.keys(TESTS).forEach(k=>s.bench[k]=+$("s_b_"+k).value);setSet(s);alert("保存しました")}
+async function chgPw(){const v=$("s_pw").value;if(v.length<4){alert("4文字以上で入力してください");return}const s=getSet();s.pass=await hashPw(v);setSet(s);alert("変更しました")}
+function tData(){
+ $("tab").innerHTML=`<div class="card"><h2>結果コードの取り込み</h2><p class="sub">受検者から届いた結果コード(APT1:...)を貼り付けます。複数ある場合は1行に1つずつ。</p><textarea id="imp" placeholder="APT1:..."></textarea><button class="btn" onclick="impCodes()">取り込む</button></div>
+ <div class="card"><h2>書き出し・バックアップ</h2><label>CSV出力する検査</label><select id="ex_t">${Object.entries(TESTS).map(([k,t])=>`<option value="${k}">${t.name}</option>`).join("")}</select>
+ <button class="btn sm" onclick="expCsv()">CSVを書き出す</button><button class="btn sm ghost" onclick="expJson()">全データ(JSON)</button>
+ <p><label>JSONバックアップの復元</label><input type="file" accept=".json" onchange="impJson(this.files[0])"></p></div>
+ <div class="card"><h2>デモ・削除</h2><p class="sub">画面確認用のデモデータ(各検査12名分)を作成できます。</p><button class="btn sm" onclick="demo()">デモデータを作成</button><button class="btn sm ghost" onclick="delDemo()">デモデータのみ削除</button><button class="btn sm danger" onclick="delAll()">すべて削除</button></div>`}
+function impCodes(){let ok=0,dup=0,ng=0;const db=getDB();$("imp").value.split(/\s+/).filter(Boolean).forEach(tok=>{const r=dec(tok);if(!r){ng++;return}if(db.some(x=>x.id===r.id)){dup++;return}db.push(r);ok++});setDB(db);alert(`取り込み:${ok}件 / 重複:${dup}件 / 読み取れず:${ng}件`);$("imp").value=""}
+function dl(name,mime,body){const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([body],{type:mime}));a.download=name;a.click()}
+function expCsv(){const t=$("ex_t").value,T=TESTS[t],keys=Object.keys(T.dims),rows=getDB().filter(r=>r.t===t).sort((a,b)=>a.ts-b.ts);
+ const q=v=>`"${String(v==null?"":v).replace(/"/g,'""')}"`;
+ const head=["日時","氏名","所属","志望職種","総合スコア","判定",...keys.map(k=>T.dims[k].n)];
+ const body=rows.map(r=>[fdate(r.ts),r.n,r.d,r.r,r.o,rk(t,r.o),...keys.map(k=>r.s[k])].map(q).join(","));
+ dl(`${T.name}_${fday(Date.now()).replace(/\//g,"")}.csv`,"text/csv","﻿"+[head.map(q).join(","),...body].join("\n"))}
+function expJson(){dl("aptitude-backup.json","application/json",JSON.stringify({results:getDB(),settings:Object.assign(getSet(),{pass:null})}))}
+function impJson(f){if(!f)return;const rd=new FileReader();rd.onload=()=>{try{const d=JSON.parse(rd.result),db=getDB();let n=0;(d.results||[]).forEach(r=>{if(TESTS[r.t]&&r.id&&!db.some(x=>x.id===r.id)){db.push(r);n++}});setDB(db);alert(n+"件を復元しました")}catch(e){alert("読み込めませんでした")}};rd.readAsText(f)}
+function delAll(){if(confirm("すべての受検結果を削除します。元に戻せません。よろしいですか?")){setDB([]);alert("削除しました")}}
+function delDemo(){setDB(getDB().filter(r=>!r.id.startsWith("demo-")));alert("デモデータを削除しました")}
+function demo(){const db=getDB(),nm=["佐藤","鈴木","高橋","田中","伊藤","渡辺","山本","中村","小林","加藤","吉田","山田"],fn=["太郎","花子","健","美咲","翔","結衣","大輔","愛","拓也","陽子","蓮","彩"],ds=["営業部","管理部","開発部","店舗","病棟","介護施設"];
+ const rn=()=>{let x=0;for(let i=0;i<4;i++)x+=Math.random();return (x-2)*18};const cl=v=>Math.max(5,Math.min(98,Math.round(v)));
+ Object.keys(TESTS).forEach(t=>{const T=TESTS[t];for(let i=0;i<12;i++){const base=58+rn(),s={},ts=Date.now()-Math.floor(Math.random()*150)*864e5,x={};
+  Object.keys(T.dims).forEach(k=>{const kd=T.dims[k].kind;s[k]=kd==="valid"?cl(35+Math.random()*50):kd==="risk"?cl(Math.random()*80):cl(base+rn()*0.9)});
+  if(t==="basic"){x.raw={};Object.keys(T.dims).forEach(k=>{const c=Math.max(0,Math.min(8,Math.round(s[k]/100*8)));x.raw[k]=[c,8];s[k]=Math.round(c/8*100)});x.secs=700+Math.floor(Math.random()*900)}
+  else{if(s.valid!=null)x.v=s.valid;if(s.risk!=null)x.risk=s.risk;x.sl=false}
+  const mk=mainKeys(t),o=Math.round(mean(mk.map(k=>s[k])));
+  db.push({id:"demo-"+uid(),t,n:nm[i]+" "+fn[(i*5+t.length)%12],d:t==="staff"?ds[i%4]:t==="med"?ds[4+i%2]:"",r:"",ts,s,o,x})}});
+ setDB(db);alert("デモデータを作成しました");render()}
+render();
+if("serviceWorker" in navigator&&location.protocol.startsWith("http"))navigator.serviceWorker.register("sw.js").catch(()=>{});
+try{if(navigator.storage&&navigator.storage.persist)navigator.storage.persist()}catch(e){}
+</script>
+</body>
+</html>
